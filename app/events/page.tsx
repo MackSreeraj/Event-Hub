@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { Calendar, MapPin, Search } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image" 
 
 const MOCK_EVENTS = [
   {
@@ -14,7 +15,7 @@ const MOCK_EVENTS = [
     location: "San Francisco, CA",
     price: 299,
     category: "Technology",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop",
+    image: "./images/1.jpg",
     organizer: {
       name: "Tech Events Inc",
       id: "org1"
@@ -31,7 +32,7 @@ const MOCK_EVENTS = [
     location: "Austin, TX",
     price: 150,
     category: "Music",
-    image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&auto=format&fit=crop",
+    image: "./images/2.jpg",
     organizer: {
       name: "Festival Productions",
       id: "org2"
@@ -48,7 +49,7 @@ const MOCK_EVENTS = [
     location: "New York, NY",
     price: 75,
     category: "Arts",
-    image: "https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=800&auto=format&fit=crop",
+    image: "./images/3.jpg",
     organizer: {
       name: "Metropolitan Arts",
       id: "org3"
@@ -65,7 +66,7 @@ const MOCK_EVENTS = [
     location: "Chicago, IL",
     price: 199,
     category: "Sports",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop",
+    image: "./images/4.jpg",
     organizer: {
       name: "Sports League",
       id: "org4"
@@ -82,7 +83,7 @@ const MOCK_EVENTS = [
     location: "Napa Valley, CA",
     price: 250,
     category: "Food",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&auto=format&fit=crop",
+    image: "./images/5.jpg",
     organizer: {
       name: "Culinary Events Co",
       id: "org5"
@@ -99,7 +100,7 @@ const MOCK_EVENTS = [
     location: "Seattle, WA",
     price: 399,
     category: "Business",
-    image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop",
+    image: "./images/6.jpeg",
     organizer: {
       name: "Business Network Int",
       id: "org6"
@@ -118,7 +119,7 @@ export default function EventsPage() {
         <div 
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop")',
+            backgroundImage: 'url("./images/1.jpg")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -175,7 +176,7 @@ export default function EventsPage() {
           <Link href={`/events/${event.id}`} key={event.id}>
             <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
               <div className="relative">
-                <img
+                <Image
                   src={event.image}
                   alt={event.title}
                   className="w-full h-48 object-cover"

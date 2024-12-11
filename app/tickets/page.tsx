@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, MapPin } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 const MOCK_TICKETS = [
   {
@@ -19,7 +20,7 @@ const MOCK_TICKETS = [
       date: "2024-06-15",
       time: "09:00",
       location: "San Francisco, CA",
-      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop"
+      image: "./images/1.jpg"
     }
   }
 ]
@@ -33,7 +34,7 @@ export default function TicketsPage() {
         {MOCK_TICKETS.map((ticket) => (
           <Card key={ticket.id} className="p-6">
             <div className="flex flex-col md:flex-row gap-6">
-              <img
+              <Image
                 src={ticket.event.image}
                 alt={ticket.event.title}
                 className="w-full md:w-48 h-32 object-cover rounded-lg"
@@ -83,7 +84,7 @@ export default function TicketsPage() {
 
         {MOCK_TICKETS.length === 0 && (
           <Card className="p-6 text-center">
-            <p className="text-muted-foreground">You haven't purchased any tickets yet.</p>
+            <p className="text-muted-foreground">You haven&apos;t purchased any tickets yet.</p>
             <Button className="mt-4" asChild>
               <Link href="/events">Browse Events</Link>
             </Button>

@@ -4,29 +4,24 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
 import { useSearchParams } from "next/navigation"
 
 const MOCK_EVENT = {
   id: "1",
-  title: "Tech Conference 2024",
+  title: "Tech Conference 2024", // No unescaped characters here
   price: 299,
 }
 
 export default function CheckoutPage({ params }: { params: { eventId: string } }) {
   const searchParams = useSearchParams()
   const quantity = parseInt(searchParams.get("quantity") || "1")
-  const { toast } = useToast()
   const [loading, setLoading] = useState(false)
 
   const handlePayment = async () => {
     setLoading(true)
     // Here you would typically make an API call to your payment processor
     setTimeout(() => {
-      toast({
-        title: "Payment successful!",
-        description: "Your tickets have been booked.",
-      })
+      alert("Payment successful! Your tickets have been booked.") // No issues with quotes here
       // Redirect to tickets page
       window.location.href = "/tickets"
     }, 2000)
