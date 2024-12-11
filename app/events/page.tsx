@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { Calendar, MapPin, Search } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image" 
+import Image from "next/image"
 
 const MOCK_EVENTS = [
   {
@@ -15,7 +15,7 @@ const MOCK_EVENTS = [
     location: "San Francisco, CA",
     price: 299,
     category: "Technology",
-    image: "./images/1.jpg",
+    image: "/images/1.jpg",
     organizer: {
       name: "Tech Events Inc",
       id: "org1"
@@ -32,7 +32,7 @@ const MOCK_EVENTS = [
     location: "Austin, TX",
     price: 150,
     category: "Music",
-    image: "./images/2.jpg",
+    image: "/images/2.jpg",
     organizer: {
       name: "Festival Productions",
       id: "org2"
@@ -49,7 +49,7 @@ const MOCK_EVENTS = [
     location: "New York, NY",
     price: 75,
     category: "Arts",
-    image: "./images/3.jpg",
+    image: "/images/3.jpg",
     organizer: {
       name: "Metropolitan Arts",
       id: "org3"
@@ -66,7 +66,7 @@ const MOCK_EVENTS = [
     location: "Chicago, IL",
     price: 199,
     category: "Sports",
-    image: "./images/4.jpg",
+    image: "/images/4.jpg",
     organizer: {
       name: "Sports League",
       id: "org4"
@@ -83,7 +83,7 @@ const MOCK_EVENTS = [
     location: "Napa Valley, CA",
     price: 250,
     category: "Food",
-    image: "./images/5.jpg",
+    image: "/images/5.jpg",
     organizer: {
       name: "Culinary Events Co",
       id: "org5"
@@ -100,7 +100,7 @@ const MOCK_EVENTS = [
     location: "Seattle, WA",
     price: 399,
     category: "Business",
-    image: "./images/6.jpeg",
+    image: "/images/6.jpeg",
     organizer: {
       name: "Business Network Int",
       id: "org6"
@@ -116,10 +116,10 @@ export default function EventsPage() {
       {/* Hero Section */}
       <div className="relative mb-12 h-[400px] -mx-4">
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: 'url("./images/1.jpg")',
+            backgroundImage: 'url("/images/1.jpg")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -127,7 +127,7 @@ export default function EventsPage() {
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/60" />
         </div>
-        
+
         {/* Content */}
         <div className="relative h-full flex items-center justify-center px-4">
           <div className="text-center">
@@ -179,6 +179,8 @@ export default function EventsPage() {
                 <Image
                   src={event.image}
                   alt={event.title}
+                  width={500}  // Set an appropriate width
+                  height={300}  // Set an appropriate height
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">

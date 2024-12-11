@@ -20,7 +20,7 @@ const MOCK_TICKETS = [
       date: "2024-06-15",
       time: "09:00",
       location: "San Francisco, CA",
-      image: "./images/1.jpg"
+      image: "/images/1.jpg"
     }
   }
 ]
@@ -37,6 +37,8 @@ export default function TicketsPage() {
               <Image
                 src={ticket.event.image}
                 alt={ticket.event.title}
+                width={500}  // Set an appropriate width
+                height={300}  // Set an appropriate height
                 className="w-full md:w-48 h-32 object-cover rounded-lg"
               />
               <div className="flex-1">

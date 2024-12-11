@@ -18,7 +18,7 @@ const MOCK_EVENT = {
   price: 299,
   category: "Technology",
   image:
-    "./images/1.jpg",
+    "/images/1.jpg",
   organizer: {
     name: "Tech Events Inc",
     id: "org1",
