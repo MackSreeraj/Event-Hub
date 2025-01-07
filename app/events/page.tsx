@@ -184,7 +184,7 @@ export default function EventsPage() {
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                  ${event.price}
+                ₹{event.price}
                 </div>
               </div>
               <div className="p-5">

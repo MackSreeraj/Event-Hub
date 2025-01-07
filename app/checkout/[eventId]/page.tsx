@@ -38,11 +38,11 @@ export default function CheckoutPage({ params }: { params: { eventId: string } }
           <div className="space-y-4">
             <div className="flex justify-between">
               <span>{MOCK_EVENT.title}</span>
-              <span>${MOCK_EVENT.price} x {quantity}</span>
+              <span>₹{MOCK_EVENT.price} x {quantity}</span>
             </div>
             <div className="flex justify-between font-semibold">
               <span>Total</span>
-              <span>${MOCK_EVENT.price * quantity}</span>
+              <span>₹{MOCK_EVENT.price * quantity}</span>
             </div>
           </div>
         </Card>
