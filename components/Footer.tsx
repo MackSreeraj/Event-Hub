@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-lg">Company Name</h3>
+          <h3 className="font-semibold text-lg">Event-Hub</h3>
           <p className="text-sm text-muted-foreground">
             Making the world a better place through innovative solutions.
           </p>
@@ -83,7 +83,7 @@ const Footer = () => {
       <div className="border-t">
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center text-sm">
           <p className="text-muted-foreground">
-            &copy; {new Date().getFullYear()} Company Name. All rights reserved.
+            &copy; {new Date().getFullYear()} Event-Hub. All rights reserved.
           </p>
           <div className="space-x-4">
             <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">

@@ -103,7 +103,7 @@ export default function CreateEventPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label htmlFor="price" className="text-sm font-medium">Price ($)</label>
+              <label htmlFor="price" className="text-sm font-medium">Price (₹)</label>
               <Input
                 id="price"
                 name="price"

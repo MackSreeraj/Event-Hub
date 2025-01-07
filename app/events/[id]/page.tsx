@@ -36,7 +36,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
     alert(`Booking ${quantity} ticket(s) for ${MOCK_EVENT.title}. Redirecting to payment...`)
     
     // Redirect to payment page
-    window.location.href = `/checkout/${MOCK_EVENT.id}?quantity=${quantity}`
+    window.location.href = `/checkout/{MOCK_EVENT.id}?quantity={quantity}`
   }
 
   return (
@@ -80,7 +80,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
             <h3 className="text-xl font-semibold mb-4">Booking Details</h3>
             <div className="flex items-center justify-between mb-4">
               <span>Price per ticket</span>
-              <span className="font-semibold">${MOCK_EVENT.price}</span>
+              <span className="font-semibold">₹{MOCK_EVENT.price}</span>
             </div>
             <div className="flex items-center justify-between mb-4">
               <span>Tickets available</span>
