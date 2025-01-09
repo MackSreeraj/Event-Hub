@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { UserCircle, Mail, Phone, MapPin, Calendar, Edit } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
 import { useState } from "react"
 
 export default function ProfilePage() {
