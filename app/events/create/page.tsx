@@ -20,13 +20,33 @@ export default function CreateEventPage() {
     image: "",
     capacity: ""
   })
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically make an API call to save the event
-    console.log("Form submitted:", formData)
-    router.push("/events")
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/events/create/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create event');
+      }
+
+      const data = await response.json();
+      router.push('/events'); // Redirects to events list on success
+    } catch (error) {
+      console.error('Error creating event:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -103,7 +123,7 @@ export default function CreateEventPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label htmlFor="price" className="text-sm font-medium">Price ($)</label>
+              <label htmlFor="price" className="text-sm font-medium">Price (₹)</label>
               <Input
                 id="price"
                 name="price"
@@ -165,8 +185,8 @@ export default function CreateEventPage() {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" className="flex-1">
-              Create Event
+            <Button type="submit" className="flex-1" disabled={isLoading}>
+              {isLoading ? 'Creating...' : 'Create Event'}
             </Button>
             <Button 
               type="button" 
@@ -181,4 +201,4 @@ export default function CreateEventPage() {
       </Card>
     </div>
   )
-} 
+}
