@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -8,9 +9,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-lg">Company Name</h3>
+          <h3 className="font-semibold text-lg">Event-Hub</h3>
           <p className="text-sm text-muted-foreground">
-            Making the world a better place through innovative solutions.
+            Host and manage events. We provide a simple and easy-to-use interface to create and manage events completely for free.
           </p>
           <div className="space-x-4">
             <a href="https://twitter.com" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -56,10 +57,10 @@ const Footer = () => {
         <div className="space-y-4">
           <h3 className="font-semibold text-lg">Contact Us</h3>
           <ul className="space-y-2 text-muted-foreground">
-            <li>123 Business Street</li>
-            <li>City, State 12345</li>
-            <li>Phone: (123) 456-7890</li>
-            <li>Email: info@company.com</li>
+            <li>Place: Somewhere around Earth</li>
+            {/* <li></li> */}
+            <li>Phone: Find it!</li>
+            <li>Email: ask@eventhub.com</li>
           </ul>
         </div>
 
@@ -83,9 +84,21 @@ const Footer = () => {
       <div className="border-t">
         <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center text-sm">
           <p className="text-muted-foreground">
-            &copy; {new Date().getFullYear()} Company Name. All rights reserved.
+            &copy; {new Date().getFullYear()} Event-Hub. All Rights Reserved.
           </p>
+          
+          <p className="text-muted-foreground text-center my-2 md:my-0">
+          Cooked with ❤️
+          </p>
+
           <div className="space-x-4">
+            <Link 
+              href="https://github.com/MackSreeraj/Event-Hub"
+              target="_blank"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <FaGithub className="inline-block w-5 h-5" />
+            </Link>
             <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
               Privacy Policy
             </Link>
