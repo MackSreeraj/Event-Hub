@@ -20,7 +20,7 @@ const MOCK_TICKETS = [
       date: "2024-06-15",
       time: "09:00",
       location: "San Francisco, CA",
-      image: "/images/1.jpg"
+      image: "/images/2.jpg"
     }
   }
 ]
