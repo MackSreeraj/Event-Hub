@@ -8,7 +8,7 @@ import Image from "next/image"
 
 const MOCK_TICKETS = [
   {
-    id: "1",
+    id: "123",
     eventId: "1",
     userId: "user1",
     purchaseDate: "2024-03-15",
@@ -20,7 +20,7 @@ const MOCK_TICKETS = [
       date: "2024-06-15",
       time: "09:00",
       location: "San Francisco, CA",
-      image: "/images/1.jpg"
+      image: "/images/2.jpg"
     }
   }
 ]
@@ -72,7 +72,7 @@ export default function TicketsPage() {
               </div>
               <div className="flex flex-col gap-2">
                 <Button asChild>
-                  <Link href={`/tickets/${ticket.id}`}>
+                  <Link href={`events/tickets/${ticket.id}`}>
                     View Ticket
                   </Link>
                 </Button>
