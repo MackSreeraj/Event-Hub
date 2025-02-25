@@ -55,4 +55,15 @@ router.post('/create', async (req, res) => {
   }
 });
 
+// GET route to retrieve all events from DB
+router.get('/all', async (req, res) => {
+  try {
+    const events = await Event.find().sort({ createdAt: -1 });
+    res.status(200).json(events);
+  } catch (error) {
+    console.error('Error retrieving events:', error);
+    res.status(500).json({ error: 'Failed to retrieve events' });
+  }
+});
+
 module.exports = router;

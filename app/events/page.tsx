@@ -1,116 +1,64 @@
+"use client";
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
 import { Calendar, MapPin, Search } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { useState, useEffect } from "react"
 
-const MOCK_EVENTS = [
-  {
-    id: "1",
-    title: "Tech Conference 2024",
-    description: "Join us for the biggest tech conference of the year",
-    date: "2024-06-15",
-    time: "09:00",
-    location: "San Francisco, CA",
-    price: 299,
-    category: "Technology",
-    image: "/images/1.jpg",
-    organizer: {
-      name: "Tech Events Inc",
-      id: "org1"
-    },
-    capacity: 1000,
-    ticketsAvailable: 450
-  },
-  {
-    id: "2",
-    title: "Summer Music Festival",
-    description: "A weekend of amazing music under the stars",
-    date: "2024-07-20",
-    time: "16:00",
-    location: "Austin, TX",
-    price: 150,
-    category: "Music",
-    image: "/images/2.jpg",
-    organizer: {
-      name: "Festival Productions",
-      id: "org2"
-    },
-    capacity: 5000,
-    ticketsAvailable: 2000
-  },
-  {
-    id: "3",
-    title: "Art Gallery Opening Night",
-    description: "Exclusive preview of contemporary art exhibitions",
-    date: "2024-05-10",
-    time: "19:00",
-    location: "New York, NY",
-    price: 75,
-    category: "Arts",
-    image: "/images/3.jpg",
-    organizer: {
-      name: "Metropolitan Arts",
-      id: "org3"
-    },
-    capacity: 200,
-    ticketsAvailable: 50
-  },
-  {
-    id: "4",
-    title: "Sports Championship Finals",
-    description: "Watch the ultimate showdown of the season",
-    date: "2024-08-30",
-    time: "20:00",
-    location: "Chicago, IL",
-    price: 199,
-    category: "Sports",
-    image: "/images/4.jpg",
-    organizer: {
-      name: "Sports League",
-      id: "org4"
-    },
-    capacity: 15000,
-    ticketsAvailable: 3000
-  },
-  {
-    id: "5",
-    title: "Food & Wine Festival",
-    description: "Taste exquisite cuisine and premium wines",
-    date: "2024-09-15",
-    time: "12:00",
-    location: "Napa Valley, CA",
-    price: 250,
-    category: "Food",
-    image: "/images/5.jpg",
-    organizer: {
-      name: "Culinary Events Co",
-      id: "org5"
-    },
-    capacity: 500,
-    ticketsAvailable: 100
-  },
-  {
-    id: "6",
-    title: "Business Leadership Summit",
-    description: "Connect with industry leaders and innovators",
-    date: "2024-10-05",
-    time: "08:00",
-    location: "Seattle, WA",
-    price: 399,
-    category: "Business",
-    image: "/images/6.jpeg",
-    organizer: {
-      name: "Business Network Int",
-      id: "org6"
-    },
-    capacity: 300,
-    ticketsAvailable: 75
-  }
-]
+// Define the Event type to match your backend schema
+interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  price: number;
+  category: string;
+  capacity: number;
+  createdAt: string;
+}
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/events/all');
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const data = await response.json();
+        setEvents(data);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error fetching events:', err);
+        setError('Could not load events');
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Loading events...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen text-red-500">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Hero Section */}
@@ -172,38 +120,26 @@ export default function EventsPage() {
 
       {/* Events Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {MOCK_EVENTS.map((event) => (
-          <Link href={`/events/${event.id}`} key={event.id}>
+        {events.map((event) => (
+          <Link href={`/events/${event._id}`} key={event._id}>
             <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
-              <div className="relative">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  width={500}  // Set an appropriate width
-                  height={300}  // Set an appropriate height
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                  ${event.price}
-                </div>
-              </div>
               <div className="p-5">
                 <div className="text-sm text-primary mb-2">{event.category}</div>
                 <h3 className="text-xl font-semibold mb-3 line-clamp-2">{event.title}</h3>
                 <div className="flex items-center text-muted-foreground mb-2">
                   <Calendar className="h-4 w-4 mr-2" />
-                  {new Date(event.date).toLocaleDateString()} at {event.time}
+                  {new Date(event.date).toLocaleDateString()}
                 </div>
                 <div className="flex items-center text-muted-foreground mb-4">
                   <MapPin className="h-4 w-4 mr-2" />
                   {event.location}
                 </div>
                 <div className="flex justify-between items-center mt-auto">
-                  <span className="text-sm font-medium">
-                    By {event.organizer.name}
-                  </span>
                   <span className="text-sm text-muted-foreground">
-                    {event.ticketsAvailable} tickets left
+                    Capacity: {event.capacity}
+                  </span>
+                  <span className="text-primary font-medium">
+                    ${event.price}
                   </span>
                 </div>
               </div>
