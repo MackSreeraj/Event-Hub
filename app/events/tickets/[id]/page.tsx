@@ -37,14 +37,22 @@ export default function TicketDetailsPage({ params }: { params: { id: string } }
             font-weight: 800; 
             text-transform: uppercase;
             letter-spacing: 3px;
-            background: linear-gradient(to right, #ffffff 0%, #666666 100%);
+            
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 5px;
-            display: inline-block;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 5px;// Assuming your PDF template has a title element like this:<div style={{
+              
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              marginBottom: '5px',
+              display: 'inline-block',
+              position: 'relative',
+              zIndex: 1,
+              padding: '10px' // Optional: Add some padding if needed
+            }}>
+ 
+            </div>
           ">
             ${MOCK_TICKET.eventTitle}
           </h1>
@@ -109,7 +117,7 @@ export default function TicketDetailsPage({ params }: { params: { id: string } }
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { 
         scale: 2,
-        useCORS: true,
+        useCORS: false,
         logging: true
       },
       jsPDF: { 
@@ -153,7 +161,20 @@ export default function TicketDetailsPage({ params }: { params: { id: string } }
             <div className="p-8 relative">
               {/* Header */}
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 style={{
+                  fontSize: '32px',
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  letterSpacing: '3px',
+                  background: 'linear-gradient(to right, #ffffff 0%, #666666 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  marginBottom: '5px',
+                  display: 'inline-block',
+                  position: 'relative',
+                  zIndex: 1
+                }}>
                   {MOCK_TICKET.eventTitle}
                 </h1>
                 <p className="text-zinc-400 mt-2 font-mono">#{MOCK_TICKET.ticketNumber}</p>
@@ -219,13 +240,13 @@ export default function TicketDetailsPage({ params }: { params: { id: string } }
                     className="bg-white p-2 rounded-lg"
                   />
                   <span className="px-4 py-2 rounded-full bg-primary/10 text-primary font-medium border border-primary/20">
-                    Valid Ticket
+                    Scan Me!
                   </span>
                 </div>
 
                 <div className="flex gap-4">
                   <Button 
-                    className="bg-gradient-to-r from-primary/80 to-secondary/80 hover:from-primary hover:to-secondary text-white px-8"
+                    className="bg-zinc-800 hover:bg-zinc-700 text-white border-zinc-700 px-8"
                     onClick={handleDownload}
                   >
                     <Download className="w-4 h-4 mr-2" />
@@ -254,21 +275,23 @@ export default function TicketDetailsPage({ params }: { params: { id: string } }
         left: '0'
       }}>
         <div style={{ padding: '40px', background: 'white' }}>
-          <h1 style={{ 
-            fontSize: '24px', 
+          <h1 style={{
+            fontSize: '24px',
             fontWeight: 'bold',
             textAlign: 'center',
             marginBottom: '20px',
             color: 'black'
-          }}>{MOCK_TICKET.eventTitle}</h1>
+          }}>
+            {MOCK_TICKET.eventTitle}
+          </h1>
           
-          <p style={{ 
+          <p style={{
             textAlign: 'center',
             color: '#666',
             marginBottom: '30px'
           }}>#{MOCK_TICKET.ticketNumber}</p>
 
-          <div style={{ 
+          <div style={{
             marginBottom: '30px',
             height: '200px',
             position: 'relative'

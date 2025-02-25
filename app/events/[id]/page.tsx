@@ -27,6 +27,15 @@ const MOCK_EVENT = {
   ticketsAvailable: 450,
 }
 
+const pdfTitleStyle: React.CSSProperties = {
+  background: 'linear-gradient(90deg, #FF5733, #FFC300)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  fontSize: '24px',
+  fontWeight: 'bold',
+  textAlign: 'center' as 'center'
+};
+
 export default function EventPage({ params }: { params: { id: string } }) {
   const [quantity, setQuantity] = useState(1)
 
@@ -55,7 +64,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
 
         {/* Event Details */}
         <div>
-          <h1 className="text-4xl font-bold mb-4">{MOCK_EVENT.title}</h1>
+          <h1 style={pdfTitleStyle} className="text-4xl font-bold mb-4">{MOCK_EVENT.title}</h1>
 
           <div className="flex flex-col gap-4 mb-6">
             <div className="flex items-center text-muted-foreground">
