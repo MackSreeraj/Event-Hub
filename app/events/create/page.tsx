@@ -27,7 +27,7 @@ export default function CreateEventPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/events/create/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/events/create/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

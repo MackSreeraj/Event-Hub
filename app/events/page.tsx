@@ -26,7 +26,7 @@ export default function EventsPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/events/all');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/events/all`);
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }
