@@ -1,6 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Create uploads directory if it doesn't exist
+const uploadDir = 'public/uploads/events';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure multer for image upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'event-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.'));
+    }
+  }
+});
 
 // Event Schema
 const eventSchema = new mongoose.Schema({
@@ -17,9 +50,12 @@ const eventSchema = new mongoose.Schema({
 
 const Event = mongoose.model('Event', eventSchema);
 
-// POST route to create event
-router.post('/create', async (req, res) => {
+// Modified POST route to handle file upload
+router.post('/create', upload.single('image'), async (req, res) => {
   try {
+    console.log('Received form data:', req.body);
+    console.log('Received file:', req.file);
+
     const {
       title,
       description,
@@ -28,12 +64,24 @@ router.post('/create', async (req, res) => {
       location,
       price,
       category,
-      image,
       capacity
     } = req.body;
 
+    // Validate required fields
+    if (!title || !description || !date || !location || !price || !category || !capacity) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if file was uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: 'Image is required' });
+    }
+
+    // Create image path
+    const imagePath = `/uploads/events/${req.file.filename}`;
+
     // Combine date and time
-    const eventDateTime = new Date(`${date}T${time}`);
+    const eventDateTime = time ? new Date(`${date}T${time}`) : new Date(date);
 
     const newEvent = new Event({
       title,
@@ -42,7 +90,7 @@ router.post('/create', async (req, res) => {
       location,
       price: parseFloat(price),
       category,
-      image,
+      image: imagePath,
       capacity: parseInt(capacity)
     });
 
@@ -51,7 +99,10 @@ router.post('/create', async (req, res) => {
 
   } catch (error) {
     console.error('Event creation error:', error);
-    res.status(500).json({ error: 'Failed to create event' });
+    res.status(500).json({ 
+      error: 'Failed to create event',
+      details: error.message 
+    });
   }
 });
 
