@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Calendar, MapPin, Search } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 
 // Define the Event type to match your backend schema
 interface Event {
@@ -16,6 +17,7 @@ interface Event {
   category: string;
   capacity: number;
   createdAt: string;
+  image: string;  // This will now be a path to the image on the server
 }
 
 export default function EventsPage() {
@@ -123,6 +125,16 @@ export default function EventsPage() {
         {events.map((event) => (
           <Link href={`/events/${event._id}`} key={event._id}>
             <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
+              {event.image && (
+                <div className="relative w-full h-48">
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URI}${event.image}`}
+                    alt={event.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
               <div className="p-5">
                 <div className="text-sm text-primary mb-2">{event.category}</div>
                 <h3 className="text-xl font-semibold mb-3 line-clamp-2">{event.title}</h3>
