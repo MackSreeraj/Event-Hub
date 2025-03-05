@@ -73,7 +73,10 @@ export default function HomePage() {
 
           {/* Feature Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="group bg-zinc-900/50 p-8 rounded-2xl border border-zinc-800 hover:border-white/20 transition-all transform hover:-translate-y-1 cursor-pointer">
+            <div 
+              onClick={() => router.push('/events/create')}
+              className="group bg-zinc-900/50 p-8 rounded-2xl border border-zinc-800 hover:border-white/20 transition-all transform hover:-translate-y-1 cursor-pointer"
+            >
               <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center mb-4 group-hover:bg-white/20 transition-all mx-auto">
                 <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
