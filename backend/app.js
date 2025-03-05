@@ -21,7 +21,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(cors({
-  origin: '*', // Your frontend URL
+  origin: [
+    'http://localhost:3000',      // Local development
+    'https://event-hub-project.vercel.app',  // Vercel production
+    'https://event-hub-n8zn.onrender.com'   // Render backend (if needed)
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
