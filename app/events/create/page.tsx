@@ -5,7 +5,8 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, ChangeEvent } from "react"
+import Image from "next/image"
 
 export default function CreateEventPage() {
   const router = useRouter()
@@ -17,32 +18,43 @@ export default function CreateEventPage() {
     location: "",
     price: "",
     category: "",
-    image: "",
+    image: null as File | null,
     capacity: ""
   })
   const [isLoading, setIsLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/events/create/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
+      const formDataToSend = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value === null) return;
+        if (key === 'image' && value instanceof File) {
+          formDataToSend.append('image', value);
+        } else {
+          formDataToSend.append(key, value.toString());
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create event');
-      }
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/api/events/create`, {
+        method: 'POST',
+        body: formDataToSend,
+        credentials: 'include',
+      });
 
       const data = await response.json();
-      router.push('/events'); // Redirects to events list on success
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create event');
+      }
+
+      router.push('/events');
     } catch (error) {
       console.error('Error creating event:', error);
+      alert(error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -52,6 +64,15 @@ export default function CreateEventPage() {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, image: file }));
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -172,16 +193,27 @@ export default function CreateEventPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="image" className="text-sm font-medium">Image URL</label>
-            <Input
-              id="image"
-              name="image"
-              type="url"
-              value={formData.image}
-              onChange={handleChange}
-              placeholder="Enter image URL for the event"
-              required
-            />
+            <label htmlFor="image" className="text-sm font-medium">Event Image</label>
+            <div className="flex flex-col gap-4">
+              <Input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                required
+              />
+              {previewUrl && (
+                <div className="relative w-full h-48">
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    fill
+                    className="object-cover rounded-md"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex gap-4 pt-4">

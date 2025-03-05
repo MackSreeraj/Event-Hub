@@ -54,9 +54,9 @@ export default function EventPage({ params }: { params: { id: string } }) {
         {/* Event Image */}
         <div>
           <Image
-            src={MOCK_EVENT.image}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URI}${MOCK_EVENT.image}`}
             alt={MOCK_EVENT.title}
-            width={800} // Added width and height for optimization
+            width={800}
             height={450}
             className="w-full rounded-lg object-cover aspect-video"
           />
