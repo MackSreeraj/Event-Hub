@@ -128,7 +128,9 @@ export default function EventsPage() {
               {event.image && (
                 <div className="relative w-full h-48">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URI}${event.image}`}
+                    src={event.image.startsWith('http') 
+                      ? event.image 
+                      : `${process.env.NEXT_PUBLIC_BACKEND_URI}/${event.image.replace(/^\//, '')}`}
                     alt={event.title}
                     fill
                     className="object-cover"
