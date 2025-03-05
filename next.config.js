@@ -7,6 +7,14 @@ const nextConfig = {
   },
   images: {
     domains: ['event-hub-n8zn.onrender.com', 'img.com', 'localhost', 'example.com']
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://event-hub-n8zn.onrender.com/api/:path*'
+      }
+    ]
   }
 }
 
