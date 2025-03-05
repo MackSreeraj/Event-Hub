@@ -129,7 +129,7 @@ export default function LoginPage() {
               </div>
 
               <p className="text-center text-zinc-400 text-sm">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <button
                   type="button"
                   className="text-white hover:underline"
