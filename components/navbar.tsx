@@ -43,52 +43,25 @@ export function Navbar() {
   
   return (
     <nav className="border-b">
-      <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center w-full">
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            <Menu className="h-6 w-6 text-white" />
-          </button>
-          <div className="flex justify-center w-full">
-            <Link href="/" className="flex items-center justify-center">
-              <Calendar className="h-8 w-8 text-primary mr-2" />
-              <span className="font-bold text-xl">EventHub</span>
-            </Link>
-          </div>
-          <div className="ml-auto">
-          </div>
+      <div className="flex items-center justify-between h-16 px-4 max-w-7xl mx-auto">
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+          <Menu className="h-6 w-6 text-white" />
+        </button>
+        <div className="flex items-center justify-center flex-grow md:justify-start">
+          <Link href="/" className="flex items-center">
+            <Calendar className="h-8 w-8 text-primary mr-2" />
+            <span className="font-bold text-xl">EventHub</span>
+          </Link>
         </div>
-        {menuOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setMenuOpen(false)} />
-        )}
-        {menuOpen && (
-          <div className="fixed left-0 top-0 w-64 h-full bg-gray-800 p-4 z-50">
-            <h2 className="text-white text-lg font-bold mb-4">Menu</h2>
-            <div className="flex flex-col space-y-2">
-              {routes.map((route) => (
-                <Button key={route.href} variant="ghost" asChild>
-                  <Link href={route.href} className="flex items-center text-white">
-                    <route.icon className="h-4 w-4 mr-2" />
-                    {route.label}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-        <div className="hidden md:flex ml-auto flex items-center space-x-4 flex-wrap space-y-2">
+        <div className="hidden md:flex items-center space-x-4">
           {routes.map((route) => (
-            <Button
-              key={route.href}
-              variant={route.active ? "default" : "ghost"}
-              asChild
-            >
+            <Button key={route.href} variant="ghost" asChild>
               <Link href={route.href} className="flex items-center">
                 <route.icon className="h-4 w-4 mr-2" />
                 {route.label}
               </Link>
             </Button>
           ))}
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -129,6 +102,24 @@ export function Navbar() {
           </DropdownMenu>
         </div>
       </div>
+      {menuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setMenuOpen(false)} />
+      )}
+      {menuOpen && (
+        <div className="fixed left-0 top-0 w-64 h-full bg-gray-800 p-4 z-50">
+          <h2 className="text-white text-lg font-bold mb-4">Menu</h2>
+          <div className="flex flex-col space-y-2">
+            {routes.map((route) => (
+              <Button key={route.href} variant="ghost" asChild>
+                <Link href={route.href} className="flex items-center text-white">
+                  <route.icon className="h-4 w-4 mr-2" />
+                  {route.label}
+                </Link>
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
