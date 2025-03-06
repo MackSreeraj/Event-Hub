@@ -128,6 +128,22 @@ export default function HomePage() {
         .animate-slide {
           animation: slide 4s linear infinite;
         }
+        @media (max-width: 640px) {
+          h1 {
+            font-size: 4rem;
+          }
+          p {
+            font-size: 1.5rem;
+          }
+          .grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (min-width: 641px) and (max-width: 768px) {
+          h1 {
+            font-size: 5rem;
+          }
+        }
       `}</style>
     </div>
   )

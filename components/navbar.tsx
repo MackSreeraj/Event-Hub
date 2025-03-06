@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Calendar, Home, TicketIcon, User, LogOut, Settings, UserCircle } from "lucide-react"
+import { Calendar, Home, TicketIcon, User, LogOut, Settings, UserCircle, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,10 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useState } from "react"
 
 export function Navbar() {
   const pathname = usePathname()
-  
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const routes = [
     {
       href: "/",
@@ -42,11 +44,38 @@ export function Navbar() {
   return (
     <nav className="border-b">
       <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
-        <Link href="/" className="flex items-center">
-          <Calendar className="h-8 w-8 text-primary mr-2" />
-          <span className="font-bold text-xl">EventHub</span>
-        </Link>
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="flex justify-between items-center w-full">
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            <Menu className="h-6 w-6 text-white" />
+          </button>
+          <div className="flex justify-center w-full">
+            <Link href="/" className="flex items-center justify-center">
+              <Calendar className="h-8 w-8 text-primary mr-2" />
+              <span className="font-bold text-xl">EventHub</span>
+            </Link>
+          </div>
+          <div className="ml-auto">
+          </div>
+        </div>
+        {menuOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setMenuOpen(false)} />
+        )}
+        {menuOpen && (
+          <div className="fixed left-0 top-0 w-64 h-full bg-gray-800 p-4 z-50">
+            <h2 className="text-white text-lg font-bold mb-4">Menu</h2>
+            <div className="flex flex-col space-y-2">
+              {routes.map((route) => (
+                <Button key={route.href} variant="ghost" asChild>
+                  <Link href={route.href} className="flex items-center text-white">
+                    <route.icon className="h-4 w-4 mr-2" />
+                    {route.label}
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="hidden md:flex ml-auto flex items-center space-x-4 flex-wrap space-y-2">
           {routes.map((route) => (
             <Button
               key={route.href}
