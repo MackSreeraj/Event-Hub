@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
+import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const router = useRouter()
@@ -13,11 +14,30 @@ export default function LoginPage() {
     email: "",
     password: ""
   })
+  const [message, setMessage] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // Add your login logic here
-    console.log("Login attempt with:", formData)
+    e.preventDefault();
+    try {
+        const response = await fetch('http://localhost:8000/api/login/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) { 
+            const token = await response.json();
+            Cookies.set('token', token.email, { expires: 1 / 24, secure: true, sameSite: 'none' });
+            router.push('/');
+        } else {
+            const errorData = await response.json(); 
+            setMessage(errorData.message || 'An error occurred during login.'); 
+        }
+    } catch (error) {
+        setMessage('An error occurred during login.');
+    }
   }
 
   return (
@@ -101,6 +121,8 @@ export default function LoginPage() {
               >
                 Sign In
               </Button>
+
+              {message && <p className="text-zinc-400 text-center">{message}</p>}
 
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">

@@ -11,6 +11,8 @@ var connectDB = require('./database/auth');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const eventRoutes = require('./routes/eventForm');
+const registerRoutes = require('./routes/register');
+const loginRoutes = require('./routes/login');
 
 connectDB();
 
@@ -40,6 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/events', eventRoutes);
+app.use('/api/register', registerRoutes);
+app.use('/api/login', loginRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

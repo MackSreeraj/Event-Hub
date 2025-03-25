@@ -7,11 +7,51 @@ import { Separator } from "@/components/ui/separator"
 import { UserCircle, Mail, Phone, MapPin, Calendar, Edit } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Cookies from 'js-cookie';
+
+// Define an interface for user data
+interface UserData {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  joinedDate: string;
+  bio: string;
+  avatar: string;
+}
 
 export default function ProfilePage() {
-  const [isEditing, setIsEditing] = useState(false)
-  const [profile, setProfile] = useState({
+  const [isEditing, setIsEditing] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null); // Initialize with UserData type
+
+  useEffect(() => {
+    const email = Cookies.get('token'); // Get email from cookie
+    if (email) {
+      // Fetch user data from the backend using fetch
+      fetch(`http://localhost:8000/api/login/email/user?email=${email}`, {
+        method: 'GET', // Use POST method
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify({ email }), // Send email in the body?
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setUserData(data); // Assuming response contains user data
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    }
+  }, []);
+
+  const profile = userData || {
     name: "John Doe",
     email: "john@example.com",
     phone: "+1 (555) 123-4567",
@@ -19,7 +59,7 @@ export default function ProfilePage() {
     joinedDate: "January 2024",
     bio: "Event enthusiast and tech professional. Love attending conferences and music festivals.",
     avatar: "/placeholder-avatar.jpg"
-  })
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -47,7 +87,7 @@ export default function ProfilePage() {
             {isEditing ? (
               <Input
                 value={profile.name}
-                onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                onChange={(e) => setUserData({ ...profile, name: e.target.value })}
                 className="text-center"
               />
             ) : (
@@ -62,7 +102,7 @@ export default function ProfilePage() {
               {isEditing ? (
                 <Input
                   value={profile.email}
-                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                  onChange={(e) => setUserData({ ...profile, email: e.target.value })}
                 />
               ) : (
                 <span className="text-sm">{profile.email}</span>
@@ -73,7 +113,7 @@ export default function ProfilePage() {
               {isEditing ? (
                 <Input
                   value={profile.phone}
-                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                  onChange={(e) => setUserData({ ...profile, phone: e.target.value })}
                 />
               ) : (
                 <span className="text-sm">{profile.phone}</span>
@@ -84,7 +124,7 @@ export default function ProfilePage() {
               {isEditing ? (
                 <Input
                   value={profile.location}
-                  onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                  onChange={(e) => setUserData({ ...profile, location: e.target.value })}
                 />
               ) : (
                 <span className="text-sm">{profile.location}</span>
@@ -99,7 +139,7 @@ export default function ProfilePage() {
           {isEditing ? (
             <textarea
               value={profile.bio}
-              onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+              onChange={(e) => setUserData({ ...profile, bio: e.target.value })}
               className="w-full min-h-[100px] p-2 rounded-md border"
             />
           ) : (

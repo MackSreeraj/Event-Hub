@@ -9,17 +9,36 @@ import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
 export default function RegisterPage() {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
+  const [formData, setFormData] = useState<{ username: string; name: string; email: string; phoneNumber: string; password: string; }>({
+    username: '',
+    name: '',
+    email: '',
+    phoneNumber: '',
+    password: ''
   })
+  const [message, setMessage] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Add your registration logic here
-    console.log("Registration attempt with:", formData)
+    try {
+      console.log("Form Data:", formData);
+      const response = await fetch('http://localhost:8000/api/register/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.error("Server response:", data);
+      setMessage(data.message);
+      if (data.status === 200) {
+        router.push('/login')
+      }
+
+    } catch (error) {
+      setMessage('An error occurred during registration.');
+    }
   }
 
   return (
@@ -49,10 +68,38 @@ export default function RegisterPage() {
                   <User className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
                   <Input
                     type="text"
+                    placeholder="Username"
+                    className="pl-10 bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                    value={formData.username}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
+                  <Input
+                    type="text"
                     placeholder="Full name"
                     className="pl-10 bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
+                  <Input
+                    type="text"
+                    placeholder="Phone Number"
+                    className="pl-10 bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
+                    value={formData.phoneNumber}
+                    onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                     required
                   />
                 </div>
@@ -94,20 +141,6 @@ export default function RegisterPage() {
                       <Eye className="h-5 w-5" />
                     )}
                   </button>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Confirm password"
-                    className="pl-10 pr-10 bg-zinc-800/50 border-zinc-700 text-white placeholder:text-zinc-400 focus:border-white focus:ring-white"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    required
-                  />
                 </div>
               </div>
 
@@ -156,6 +189,7 @@ export default function RegisterPage() {
                   Sign in
                 </button>
               </p>
+              {message && <p className="text-center text-zinc-400 text-sm">{message}</p>}
             </form>
           </div>
         </div>
